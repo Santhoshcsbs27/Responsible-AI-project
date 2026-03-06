@@ -5,7 +5,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, render_template, request
 
 from model import ResponsibleAIModel
 
@@ -43,6 +43,10 @@ def create_app() -> Flask:
     def fairness() -> tuple[dict, int]:
         metrics = model.fairness_metrics()
         return {"fairness_metrics": metrics}, 200
+
+    @app.route("/", methods=["GET"])
+    def index() -> str:
+        return render_template("index.html"), 200
 
     @app.route("/model-card", methods=["GET"])
     def model_card() -> tuple[str, int]:
